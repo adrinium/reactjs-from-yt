@@ -1,15 +1,10 @@
-import './App.css';
-import Book from './Book';
-import {data} from './books';
+import "./App.css";
+import Setup from './tutorial/01_useState/01_error-example';
 
 function App() {
   return (
-    <div className="booklist">
-     {
-       data.map((book, index) => {
-         return <Book key={book.id} {...book} />
-       })
-     }
+    <div className="container">
+      <Setup />
     </div>
   );
 }
