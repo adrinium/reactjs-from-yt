@@ -1,61 +1,46 @@
 import "./App.css";
 //import {data} from './data';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-/*const UseStateArray = () => {
-    const [people, setPeople] = useState(data);
+const url = "https:/api.github.com/users";
 
-    const removeItem = (id) => {
-        let newPeople = people.filter((person) => person.id !== id)
-        setPeople(newPeople)
-    }
-    return (
-        <div>
-            {
-                people.map((person) => {
-                    const {id, name} = person;
+const UseEffectSecondArgument = () => {
+  const [users, setUsers] = useState([]);
 
-                    return (
-                        <div key={id} className="item">
-                            <h4>{name}</h4>
-                            <button onClick={() => removeItem(id)}>Remove</button>
-                        </div>
-                    )
-                })
-            }
-            <button className="btn" onClick={() => setPeople([])}>Clear list</button>
-        </div>
-    )
-}*/
-
-const UseStateObject = () => {
-  const [person, setPerson] = useState({
-    name: "Adrian",
-    age: 49,
-    message: "random message",
-  });
-  const changeMessageHandler = () => {
-    console.log("change message handler");
-    setPerson({...person, message: 'new message'})
+  const getUsers = async () => {
+    const response = await fetch(url);
+    const users = await response.json();
+    setUsers(users);
   };
+
+  useEffect(() => {
+    getUsers();
+  }, []);
+
   return (
-    <div>
-      <h2>Use State Object</h2>
-      <h3>{person.name}</h3>
-      <h3>{person.age}</h3>
-      <h3>{person.message}</h3>
-      <button className="btn" onClick={changeMessageHandler}>
-        Change message
-      </button>
-    </div>
+    <>
+      <h3>github users</h3>
+      <ul className="users">
+        {users.map((user) => {
+          return (
+            <li key={user.id}>
+              <img src={user.avatar_url} alt="alt" />
+              <div>
+                <h4>{user.login}</h4>
+                <a href={user.html_url}>Profile</a>
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+    </>
   );
 };
 
 function App() {
   return (
     <div className="container">
-      {/*<UseStateArray/>*/}
-      <UseStateObject />
+      <UseEffectSecondArgument />
     </div>
   );
 }
